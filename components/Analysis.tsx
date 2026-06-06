@@ -19,7 +19,7 @@ export function Analysis() {
         
         // Gerar insight da IA após carregar os dados
         const insight = await generateLotteryInsight(data);
-        setAiInsight(insight);
+        setAiInsight(insight || "");
       } catch (error) {
         console.error("Error loading analysis data:", error);
       } finally {

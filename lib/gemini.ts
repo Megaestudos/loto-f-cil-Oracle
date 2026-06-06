@@ -29,7 +29,7 @@ export async function generateLotteryInsight(historyData: any[]) {
       `
     });
 
-    return response.text;
+    return response.text || "Insight não disponível no momento.";
   } catch (error) {
     console.error("Erro ao gerar insight da IA:", error);
     return "O Oráculo está processando novos padrões. Tente novamente em breve.";
