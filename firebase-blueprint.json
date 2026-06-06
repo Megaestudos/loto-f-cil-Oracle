@@ -1,0 +1,41 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "User unique ID" },
+        "email": { "type": "string", "format": "email", "description": "User email" },
+        "displayName": { "type": "string", "description": "User display name" },
+        "photoURL": { "type": "string", "description": "User photo URL" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Account creation date" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Bet": {
+      "title": "Saved Bet",
+      "description": "A bet saved by the user",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "User ID who saved the bet" },
+        "title": { "type": "string", "description": "Custom title for the bet" },
+        "numbers": { "type": "array", "items": { "type": "integer" }, "description": "The 15 numbers selected" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the bet was saved" },
+        "contestId": { "type": "string", "description": "Reference contest ID" },
+        "probability": { "type": "string", "description": "Calculated probability" }
+      },
+      "required": ["uid", "numbers", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile data"
+    },
+    "/users/{userId}/bets/{betId}": {
+      "schema": "Bet",
+      "description": "User's saved bets"
+    }
+  }
+}
