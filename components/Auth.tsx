@@ -82,72 +82,72 @@ export function Auth() {
       </div>
 
       <motion.div 
-        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        initial={{ opacity: 0, y: 10, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        className="w-full max-w-md bg-[#1c1b1b] rounded-[40px] border border-white/5 p-8 md:p-10 relative z-10 shadow-2xl my-8"
+        className="w-full max-w-[380px] bg-[#1c1b1b] rounded-[28px] border border-white/5 p-5 md:p-10 relative z-10 shadow-2xl my-auto mx-auto"
       >
-        <div className="text-center mb-10">
+        <div className="text-center mb-5 md:mb-10">
           <motion.div 
-            initial={{ scale: 0, rotate: -20 }}
-            animate={{ scale: 1, rotate: 0 }}
-            className="w-20 h-20 bg-gradient-to-br from-[#6edba6] to-[#30a373] rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-2xl shadow-[#6edba6]/30 border border-white/10"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="w-12 h-12 md:w-20 md:h-20 bg-gradient-to-br from-[#6edba6] to-[#30a373] rounded-xl md:rounded-3xl mx-auto mb-3 md:mb-6 flex items-center justify-center shadow-xl border border-white/10"
           >
-            <LogIn className="w-10 h-10 text-[#003823]" />
+            <LogIn className="w-6 h-6 md:w-10 md:h-10 text-[#003823]" />
           </motion.div>
-          <h2 className="text-4xl font-black text-white font-headline tracking-tighter leading-tight px-2">
+          <h2 className="text-xl md:text-4xl font-black text-white font-headline tracking-tighter leading-tight">
             {mode === 'login' ? 'Acesse o Oráculo' : mode === 'register' ? 'Entre para o Time' : 'Recupere sua Senha'}
           </h2>
-          <p className="text-[#bdcac0] mt-3 text-sm px-4">
-            {mode === 'login' ? 'Domine os padrões e aumente suas chances' : mode === 'register' ? 'Crie sua conta gratuita em segundos' : 'Informe seu e-mail para receber o link'}
+          <p className="text-[#bdcac0] mt-1 md:mt-3 text-[10px] md:text-sm px-2">
+            {mode === 'login' ? 'Aumente suas chances agora' : mode === 'register' ? 'Crie sua conta em segundos' : 'Informe seu e-mail abaixo'}
           </p>
         </div>
 
-        <form onSubmit={handleEmailAuth} className="space-y-5">
-          <div className="space-y-2">
-            <label className="text-[10px] uppercase font-black text-[#6edba6] ml-1 tracking-[0.2em]">E-mail de Acesso</label>
+        <form onSubmit={handleEmailAuth} className="space-y-3 md:space-y-5">
+          <div className="space-y-1 md:space-y-2">
+            <label className="text-[8px] md:text-[10px] uppercase font-black text-[#6edba6] ml-1 tracking-[0.2em]">E-mail</label>
             <div className="relative group">
-              <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#bdcac0]/40 group-focus-within:text-[#6edba6] transition-all" />
+              <Mail className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-[#bdcac0]/30 group-focus-within:text-[#6edba6] transition-all" />
               <input 
                 type="email" 
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="exemplo@gmail.com"
-                className="w-full h-16 pl-14 pr-5 bg-[#2a2a2a] border border-white/5 rounded-2xl text-white placeholder:text-white/10 focus:outline-none focus:border-[#6edba6]/40 focus:ring-4 focus:ring-[#6edba6]/5 transition-all text-sm font-medium"
+                placeholder="seu@email.com"
+                className="w-full h-11 md:h-16 pl-11 md:pl-14 pr-5 bg-[#2a2a2a] border border-white/5 rounded-xl md:rounded-2xl text-white placeholder:text-white/5 focus:outline-none focus:border-[#6edba6]/40 transition-all text-xs md:text-sm"
               />
             </div>
           </div>
 
           {mode !== 'forgot' && (
-            <div className="space-y-2">
+            <div className="space-y-1 md:space-y-2">
               <div className="flex justify-between items-center px-1">
-                <label className="text-[10px] uppercase font-black text-[#6edba6] tracking-[0.2em]">Senha de Segurança</label>
+                <label className="text-[8px] md:text-[10px] uppercase font-black text-[#6edba6] tracking-[0.2em]">Senha</label>
                 {mode === 'login' && (
                   <button 
                     type="button"
                     onClick={() => setMode('forgot')}
-                    className="text-[10px] uppercase font-black text-[#bdcac0]/50 hover:text-[#e9c349] transition-colors"
+                    className="text-[8px] md:text-[10px] uppercase font-black text-[#bdcac0]/40 hover:text-[#e9c349]"
                   >
                     Esqueceu?
                   </button>
                 )}
               </div>
               <div className="relative group">
-                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#bdcac0]/40 group-focus-within:text-[#6edba6] transition-all" />
+                <Lock className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-[#bdcac0]/30 group-focus-within:text-[#6edba6] transition-all" />
                 <input 
                   type={showPassword ? "text" : "password"} 
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Sua senha secreta"
-                  className="w-full h-16 pl-14 pr-14 bg-[#2a2a2a] border border-white/5 rounded-2xl text-white placeholder:text-white/10 focus:outline-none focus:border-[#6edba6]/40 focus:ring-4 focus:ring-[#6edba6]/5 transition-all text-sm font-medium"
+                  placeholder="Sua senha"
+                  className="w-full h-11 md:h-16 pl-11 md:pl-14 pr-11 md:pr-14 bg-[#2a2a2a] border border-white/5 rounded-xl md:rounded-2xl text-white placeholder:text-white/5 focus:outline-none focus:border-[#6edba6]/40 transition-all text-xs md:text-sm"
                 />
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 text-[#bdcac0]/40 hover:text-white transition-colors p-1"
+                  className="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 text-[#bdcac0]/30 p-1"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <EyeOff className="w-4 h-4 md:w-5 md:h-5" /> : <Eye className="w-4 h-4 md:w-5 md:h-5" />}
                 </button>
               </div>
             </div>
@@ -156,23 +156,21 @@ export function Auth() {
           <AnimatePresence mode="wait">
             {error && (
               <motion.div 
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="flex items-center gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-xs font-bold shadow-xl shadow-red-500/5"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex items-center gap-2 p-2.5 md:p-4 bg-red-500/10 border border-red-500/20 rounded-lg md:rounded-2xl text-red-400 text-[10px] md:text-xs font-bold"
               >
-                <AlertCircle className="w-5 h-5 shrink-0" />
+                <AlertCircle className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
                 {error}
               </motion.div>
             )}
             {success && (
               <motion.div 
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="flex items-center gap-3 p-4 bg-[#6edba6]/10 border border-[#6edba6]/20 rounded-2xl text-[#6edba6] text-xs font-bold shadow-xl shadow-[#6edba6]/5"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex items-center gap-2 p-2.5 md:p-4 bg-[#6edba6]/10 border border-[#6edba6]/20 rounded-lg md:rounded-2xl text-[#6edba6] text-[10px] md:text-xs font-bold"
               >
-                <CheckCircle2 className="w-5 h-5 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
                 {success}
               </motion.div>
             )}
@@ -181,34 +179,34 @@ export function Auth() {
           <button 
             type="submit"
             disabled={loading}
-            className="w-full h-16 bg-gradient-to-br from-[#6edba6] to-[#30a373] text-[#003823] font-black rounded-2xl shadow-2xl shadow-[#6edba6]/20 flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:scale-100 text-base"
+            className="w-full h-11 md:h-16 bg-gradient-to-br from-[#6edba6] to-[#30a373] text-[#003823] font-black rounded-xl md:rounded-2xl shadow-xl shadow-[#6edba6]/10 flex items-center justify-center gap-2 hover:opacity-90 transition-all disabled:opacity-50 text-xs md:text-base mt-2"
           >
             {loading ? (
-              <Loader2 className="w-6 h-6 animate-spin" />
+              <Loader2 className="w-4 h-4 md:w-6 md:h-6 animate-spin" />
             ) : (
               <>
-                {mode === 'login' ? 'Conectar ao Oráculo' : mode === 'register' ? 'Confirmar Cadastro' : 'Enviar Link'}
-                <ArrowRight className="w-5 h-5" />
+                {mode === 'login' ? 'Conectar agora' : mode === 'register' ? 'Criar minha conta' : 'Enviar link'}
+                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
               </>
             )}
           </button>
         </form>
 
-        <div className="relative my-10">
+        <div className="relative my-5 md:my-10">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-white/5" />
           </div>
-          <div className="relative flex justify-center text-[10px] uppercase font-black tracking-[0.3em] px-4">
-            <span className="bg-[#1c1b1b] text-[#bdcac0]/30 italic">Smart Login</span>
+          <div className="relative flex justify-center text-[7px] md:text-[8px] uppercase font-black tracking-[0.4em] px-3">
+            <span className="bg-[#1c1b1b] text-[#bdcac0]/20">Ou use Google</span>
           </div>
         </div>
 
         <button 
           onClick={handleGoogleLogin}
-          className="w-full h-16 bg-[#2a2a2a] border border-white/5 rounded-2xl text-white font-bold text-sm flex items-center justify-center gap-4 hover:bg-white/5 transition-all active:scale-95 group shadow-xl"
+          className="w-full h-11 md:h-16 bg-[#2a2a2a] border border-white/5 rounded-xl md:rounded-2xl text-white font-bold text-[11px] md:text-sm flex items-center justify-center gap-3 hover:bg-white/5 transition-all shadow-lg"
         >
-          <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center transition-all group-hover:scale-110">
-            <svg viewBox="0 0 24 24" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+          <div className="w-7 h-7 md:w-10 md:h-10 bg-white/5 rounded-lg flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="w-4 h-4 md:w-6 md:h-6" xmlns="http://www.w3.org/2000/svg">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
               <path d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.84z" fill="#FBBC05"/>
@@ -218,10 +216,10 @@ export function Auth() {
           Entrar com Google
         </button>
 
-        <div className="mt-10 pt-8 border-t border-white/5 text-center space-y-6">
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-[#bdcac0]/60 text-xs">
-              {mode === 'login' ? 'Ainda não é um mestre?' : 'Já possui credenciais?'}
+        <div className="mt-6 md:mt-10 pt-5 md:pt-8 border-t border-white/5 text-center space-y-4">
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-[#bdcac0]/40 text-[9px] md:text-xs">
+              {mode === 'login' ? 'Novo por aqui?' : 'Já é cadastrado?'}
             </span>
             <button 
               onClick={() => {
@@ -229,9 +227,9 @@ export function Auth() {
                 setError(null)
                 setSuccess(null)
               }}
-              className="text-[#6edba6] font-black text-sm hover:underline tracking-tight"
+              className="text-[#6edba6] font-black text-[11px] md:text-sm hover:underline"
             >
-              {mode === 'login' ? 'Criar Conta Gratuita' : 'Acessar meu Painel'}
+              {mode === 'login' ? 'Criar minha conta agora' : 'Fazer login no painel'}
             </button>
           </div>
           
@@ -242,9 +240,9 @@ export function Auth() {
                 setError(null)
                 setSuccess(null)
               }}
-              className="text-[#bdcac0]/40 text-xs font-black hover:text-[#bdcac0] transition-colors uppercase tracking-widest"
+              className="text-[#bdcac0]/30 text-[9px] md:text-xs font-black hover:text-white transition-colors uppercase tracking-[0.2em]"
             >
-              Voltar ao Início
+              Voltar ao início
             </button>
           )}
         </div>
