@@ -70,8 +70,8 @@ export function Sidebar({ activeTab, setActiveTab, isOpen, onClose }: SidebarPro
         ))}
       </nav>
 
-      <div className="p-6 space-y-4">
-        {user ? (
+      <div className="p-6">
+        {user && (
           <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/5">
             <div className="w-10 h-10 rounded-full overflow-hidden relative border border-[#6edba6]/30">
               <Image 
@@ -87,20 +87,7 @@ export function Sidebar({ activeTab, setActiveTab, isOpen, onClose }: SidebarPro
               <p className="text-[10px] text-[#bdcac0] truncate">Premium User</p>
             </div>
           </div>
-        ) : (
-          <button 
-            onClick={loginWithGoogle}
-            className="w-full py-3 px-4 rounded-xl bg-white/5 text-white font-bold text-sm border border-white/10 hover:bg-white/10 transition-all flex items-center justify-center gap-2"
-          >
-            <LogIn className="w-4 h-4" />
-            Entrar com Google
-          </button>
         )}
-        
-        <button className="w-full py-3 px-4 rounded-xl bg-gradient-to-br from-[#6edba6] to-[#30a373] text-[#003823] font-bold text-sm shadow-lg shadow-[#6edba6]/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
-          <Plus className="w-4 h-4" />
-          Novo Palpite
-        </button>
       </div>
 
       <div className="mt-auto border-t border-white/5">

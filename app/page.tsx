@@ -10,12 +10,30 @@ import { Profile } from '@/components/Profile';
 import { Results } from '@/components/Results';
 import { Stats } from '@/components/Stats';
 import { Analysis } from '@/components/Analysis';
-import { LayoutDashboard, History, Zap, Wand2, Menu } from 'lucide-react';
+import { LayoutDashboard, History, Zap, Wand2, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/components/FirebaseProvider';
+import { Auth } from '@/components/Auth';
 
 export default function Page() {
+  const { user, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-10 h-10 text-[#6edba6] animate-spin" />
+          <p className="text-[#bdcac0] font-headline font-bold animate-pulse uppercase tracking-widest text-xs">Sincronizando com Oráculo...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Auth />;
+  }
 
 
   return (
