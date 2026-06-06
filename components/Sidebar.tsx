@@ -20,9 +20,11 @@ import Image from "next/image";
 interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
+export function Sidebar({ activeTab, setActiveTab, isOpen, onClose }: SidebarProps) {
   const { user } = useAuth();
 
   const menuItems = [
@@ -36,10 +38,18 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
   ];
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 z-50 bg-[#1c1b1b] flex flex-col border-r border-white/5 shadow-[4px_0_24px_rgba(0,0,0,0.5)]">
-      <div className="px-6 py-8">
-        <h1 className="text-xl font-black text-[#e9c349] font-headline">Lotofácil Oracle</h1>
-        <p className="text-[10px] uppercase tracking-[0.2em] text-[#bdcac0]/50 mt-1 font-sans">Intelligence Portal</p>
+    <aside className={cn(
+      "fixed left-0 top-0 h-screen w-64 z-50 bg-[#1c1b1b] flex flex-col border-r border-white/5 shadow-[4px_0_24px_rgba(0,0,0,0.5)] transition-transform duration-300 ease-in-out lg:translate-x-0",
+      isOpen ? "translate-x-0" : "-translate-x-full"
+    )}>
+      <div className="px-6 py-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-black text-[#e9c349] font-headline">Lotofácil Oracle</h1>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-[#bdcac0]/50 mt-1 font-sans">Intelligence Portal</p>
+        </div>
+        <button onClick={onClose} className="lg:hidden text-white/40 hover:text-white transition-colors">
+          <History className="w-5 h-5 rotate-45" /> 
+        </button>
       </div>
 
       <nav className="flex-1 flex flex-col gap-1">

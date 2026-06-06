@@ -1,11 +1,21 @@
-import { Search, Bell, Settings } from "lucide-react";
+import { Search, Bell, Settings, Menu } from "lucide-react";
 import Image from "next/image";
 
-export function TopBar() {
+interface TopBarProps {
+  onOpenSidebar: () => void;
+}
+
+export function TopBar({ onOpenSidebar }: TopBarProps) {
   return (
-    <header className="fixed top-0 right-0 left-64 z-40 bg-[#131313]/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 border-b border-white/10 shadow-2xl shadow-black/40">
+    <header className="fixed top-0 right-0 lg:left-64 left-0 z-40 bg-[#131313]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-20 border-b border-white/10 shadow-2xl shadow-black/40 transition-all">
       <div className="flex items-center gap-4">
-        <span className="text-[#6edba6] font-headline text-sm font-medium tracking-wide">Analista Oracle</span>
+        <button 
+          onClick={onOpenSidebar}
+          className="lg:hidden p-2 -ml-2 text-white/60 hover:text-[#6edba6] transition-colors"
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+        <span className="text-[#6edba6] font-headline text-sm font-medium tracking-wide hidden sm:inline-block">Analista Oracle</span>
         <div className="h-10 w-10 rounded-full bg-[#353534] border border-[#6edba6]/20 flex items-center justify-center overflow-hidden relative">
           <Image 
             src="https://picsum.photos/seed/oracle-analyst/100/100" 
