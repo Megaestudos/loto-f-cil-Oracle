@@ -47,6 +47,7 @@ export function TopBar({ onOpenSidebar, onSearch }: TopBarProps) {
             src="https://api.dicebear.com/7.x/avataaars/svg?seed=Oracle" 
             alt="Avatar" 
             fill
+            unoptimized={true}
             className="object-cover"
             referrerPolicy="no-referrer"
           />

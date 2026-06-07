@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { auth, db, handleFirestoreError, OperationType } from "@/lib/firebase";
-import { collection, query, where, orderBy, onSnapshot, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { cn } from "@/lib/utils";
 import { Trash2, Loader2, Calendar, TrendingUp, Edit2, Check, X, Target, Award } from "lucide-react";
@@ -46,7 +46,6 @@ export function SavedBets() {
     const path = `users/${user.uid}/bets`;
     const q = query(
       collection(db, path),
-      where("uid", "==", user.uid),
       orderBy("createdAt", "desc")
     );
 
