@@ -45,8 +45,9 @@ export function Dashboard({ searchQuery }: DashboardProps) {
       const result = await fetchByConcurso(query);
       if (result) {
         setLatest(result);
+        setError(null);
       } else {
-        alert("Concurso não encontrado ou erro na busca.");
+        setError("Concurso não encontrado. Verifique o número e tente novamente.");
       }
     } catch (error) {
       console.error("Search error:", error);

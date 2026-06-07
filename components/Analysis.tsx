@@ -131,7 +131,7 @@ export function Analysis() {
             </div>
           </div>
           <div className="h-[300px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <ReBarChart data={frequencyData.slice(0, 15)}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#2a2a2a" vertical={false} />
                 <XAxis 
@@ -168,7 +168,7 @@ export function Analysis() {
             <h3 className="font-bold text-[#e5e2e1] font-headline">Equilíbrio P/I</h3>
           </div>
           <div className="h-[250px] w-full relative">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <RePieChart>
                 <Pie
                   data={parityData}
