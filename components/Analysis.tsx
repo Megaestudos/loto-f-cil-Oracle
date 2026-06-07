@@ -10,8 +10,10 @@ export function Analysis() {
   const [history, setHistory] = useState<LotofacilResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [aiInsight, setAiInsight] = useState<string>("");
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     async function loadAnalysis() {
       try {
         const data = await fetchHistory(50);
@@ -131,33 +133,35 @@ export function Analysis() {
             </div>
           </div>
           <div className="h-[300px] w-full">
-            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-              <ReBarChart data={frequencyData.slice(0, 15)}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2a2a2a" vertical={false} />
-                <XAxis 
-                  dataKey="num" 
-                  stroke="#bdcac0" 
-                  fontSize={12} 
-                  tickLine={false} 
-                  axisLine={false} 
-                />
-                <YAxis 
-                  stroke="#bdcac0" 
-                  fontSize={12} 
-                  tickLine={false} 
-                  axisLine={false} 
-                />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#1c1b1b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
-                  itemStyle={{ color: '#6edba6' }}
-                />
-                <Bar dataKey="count" radius={[4, 4, 0, 0]}>
-                  {frequencyData.slice(0, 15).map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index < 5 ? '#6edba6' : '#353534'} />
-                  ))}
-                </Bar>
-              </ReBarChart>
-            </ResponsiveContainer>
+            {isMounted && (
+              <ResponsiveContainer width="100%" height="100%" minHeight={300}>
+                <ReBarChart data={frequencyData.slice(0, 15)}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#2a2a2a" vertical={false} />
+                  <XAxis 
+                    dataKey="num" 
+                    stroke="#bdcac0" 
+                    fontSize={12} 
+                    tickLine={false} 
+                    axisLine={false} 
+                  />
+                  <YAxis 
+                    stroke="#bdcac0" 
+                    fontSize={12} 
+                    tickLine={false} 
+                    axisLine={false} 
+                  />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#1c1b1b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                    itemStyle={{ color: '#6edba6' }}
+                  />
+                  <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+                    {frequencyData.slice(0, 15).map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={index < 5 ? '#6edba6' : '#353534'} />
+                    ))}
+                  </Bar>
+                </ReBarChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
 
@@ -168,26 +172,28 @@ export function Analysis() {
             <h3 className="font-bold text-[#e5e2e1] font-headline">Equilíbrio P/I</h3>
           </div>
           <div className="h-[250px] w-full relative">
-            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-              <RePieChart>
-                <Pie
-                  data={parityData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {parityData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#1c1b1b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
-                />
-              </RePieChart>
-            </ResponsiveContainer>
+            {isMounted && (
+              <ResponsiveContainer width="100%" height="100%" minHeight={250}>
+                <RePieChart>
+                  <Pie
+                    data={parityData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {parityData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#1c1b1b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                  />
+                </RePieChart>
+              </ResponsiveContainer>
+            )}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
               <p className="text-[10px] uppercase font-bold text-[#bdcac0]">Total</p>
               <p className="text-xl font-black text-[#e5e2e1]">{totalPairs + totalOdds}</p>
