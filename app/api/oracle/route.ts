@@ -1,4 +1,4 @@
-// v2.0.4 - Enhanced prompt for Deep Analysis metrics
+// v2.0.5 - Fixed TypeScript types for Vercel build
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -24,14 +24,14 @@ export async function POST(req: Request) {
     const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23];
     const moldura = [1, 2, 3, 4, 5, 6, 10, 11, 15, 16, 20, 21, 22, 23, 24, 25];
     
-    const latest = historyData[0]?.dezenas?.map((n: string) => parseInt(n)) || [];
-    const prev = historyData[1]?.dezenas?.map((n: string) => parseInt(n)) || [];
+    const latest: number[] = historyData[0]?.dezenas?.map((n: string) => parseInt(n)) || [];
+    const prev: number[] = historyData[1]?.dezenas?.map((n: string) => parseInt(n)) || [];
     
     const stats = {
-      primesCount: latest.filter(n => primes.includes(n)).length,
-      molduraCount: latest.filter(n => moldura.includes(n)).length,
-      repeatedCount: latest.filter(n => prev.includes(n)).length,
-      sum: latest.reduce((a, b) => a + b, 0),
+      primesCount: latest.filter((n: number) => primes.includes(n)).length,
+      molduraCount: latest.filter((n: number) => moldura.includes(n)).length,
+      repeatedCount: latest.filter((n: number) => prev.includes(n)).length,
+      sum: latest.reduce((a: number, b: number) => a + b, 0),
     };
 
     const genAI = new GoogleGenerativeAI(API_KEY);
