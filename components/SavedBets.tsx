@@ -294,7 +294,7 @@ export function SavedBets() {
                   <div className="mt-auto space-y-3 pt-4 border-t border-white/5">
                     <div className="flex items-center gap-2 mb-2">
                       <ListFilter className="w-3 h-3 text-[#bdcac0]" />
-                      <span className="text-[9px] font-black uppercase text-[#bdcac0] tracking-widest">Últimos 5 Sorteios</span>
+                      <span className="text-[9px] font-black uppercase text-[#bdcac0] tracking-widest">Acertos nos Últimos 5 sorteios</span>
                     </div>
                     <div className="grid grid-cols-5 gap-1.5">
                       {historyResults.map((result) => {
