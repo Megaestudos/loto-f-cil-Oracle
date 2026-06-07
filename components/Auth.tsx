@@ -34,6 +34,16 @@ export function Auth() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
 
+  // Dollar signs for background animation
+  const dollarSigns = typeof window !== 'undefined' ? Array.from({ length: 15 }).map((_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * (40 - 15) + 15,
+    duration: Math.random() * (15 - 8) + 8,
+    delay: Math.random() * 5
+  })) : []
+
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -74,17 +84,40 @@ export function Auth() {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#0a0a0a] overflow-y-auto">
+    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center p-4 bg-[#0a0a0a] overflow-y-auto scrollbar-hide py-10">
       {/* Background Effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#6edba6]/10 blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#e9c349]/10 blur-[120px] rounded-full" />
+        
+        {/* Floating Neon Dollar Signs */}
+        {dollarSigns.map((s) => (
+          <motion.div
+            key={s.id}
+            initial={{ opacity: 0, x: `${s.x}%`, y: `${110}%` }}
+            animate={{ 
+              opacity: [0, 0.2, 0.2, 0],
+              y: '-10%',
+              rotate: [0, 180, 360]
+            }}
+            transition={{
+              duration: s.duration,
+              repeat: Infinity,
+              delay: s.delay,
+              ease: "linear"
+            }}
+            className="absolute font-black text-[#6edba6] select-none pointer-events-none drop-shadow-[0_0_10px_rgba(110,219,166,0.5)]"
+            style={{ fontSize: s.size }}
+          >
+            $
+          </motion.div>
+        ))}
       </div>
 
       <motion.div 
         initial={{ opacity: 0, y: 10, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        className="w-full max-w-[380px] bg-[#1c1b1b] rounded-[28px] border border-white/5 p-5 md:p-10 relative z-10 shadow-2xl my-auto mx-auto"
+        className="w-full max-w-[380px] bg-[#1c1b1b]/90 backdrop-blur-xl rounded-[28px] border border-white/5 p-5 md:p-10 relative z-10 shadow-2xl my-auto mx-auto"
       >
         <div className="text-center mb-5 md:mb-10">
           <motion.div 
@@ -97,7 +130,7 @@ export function Auth() {
           <h2 className="text-xl md:text-4xl font-black text-white font-headline tracking-tighter leading-tight">
             {mode === 'login' ? 'Acesse o Oráculo' : mode === 'register' ? 'Entre para o Time' : 'Recupere sua Senha'}
           </h2>
-          <p className="text-[#bdcac0] mt-1 md:mt-3 text-[10px] md:text-sm px-2">
+          <p className="text-[#bdcac0] mt-1 md:mt-3 text-[10px] md:text-sm px-2 opacity-50 italic">
             {mode === 'login' ? 'Aumente suas chances agora' : mode === 'register' ? 'Crie sua conta em segundos' : 'Informe seu e-mail abaixo'}
           </p>
         </div>
@@ -203,9 +236,9 @@ export function Auth() {
 
         <button 
           onClick={handleGoogleLogin}
-          className="w-full h-11 md:h-16 bg-[#2a2a2a] border border-white/5 rounded-xl md:rounded-2xl text-white font-bold text-[11px] md:text-sm flex items-center justify-center gap-3 hover:bg-white/5 transition-all shadow-lg"
+          className="w-full h-11 md:h-16 bg-[#2a2a2a] border border-white/5 rounded-xl md:rounded-2xl text-white font-black text-[10px] md:text-xs flex items-center justify-center gap-3 hover:bg-white/5 transition-all shadow-lg"
         >
-          <div className="w-7 h-7 md:w-10 md:h-10 bg-white/5 rounded-lg flex items-center justify-center">
+          <div className="w-7 h-7 md:w-9 md:h-9 bg-white/5 rounded-lg flex items-center justify-center">
             <svg viewBox="0 0 24 24" className="w-4 h-4 md:w-6 md:h-6" xmlns="http://www.w3.org/2000/svg">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -218,7 +251,7 @@ export function Auth() {
 
         <div className="mt-6 md:mt-10 pt-5 md:pt-8 border-t border-white/5 text-center space-y-4">
           <div className="flex flex-col items-center gap-1">
-            <span className="text-[#bdcac0]/40 text-[9px] md:text-xs">
+            <span className="text-[#bdcac0]/30 text-[9px] md:text-xs capitalize font-medium">
               {mode === 'login' ? 'Novo por aqui?' : 'Já é cadastrado?'}
             </span>
             <button 
