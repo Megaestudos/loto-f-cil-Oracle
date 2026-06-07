@@ -1,5 +1,6 @@
-import { Calendar, ArrowRight, Scale, Sigma, Grid3X3, Filter, Lightbulb, Zap, Loader2, RefreshCw } from "lucide-react";
+import { Calendar, ArrowRight, Scale, Sigma, Grid3X3, Filter, Lightbulb, Zap, Loader2, RefreshCw, AlertCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { fetchLatestResult, fetchHistory, fetchByConcurso, LotofacilResult } from "@/lib/lottery-api";
 import { cn } from "@/lib/utils";
 
@@ -12,6 +13,7 @@ export function Dashboard({ searchQuery }: DashboardProps) {
   const [history, setHistory] = useState<LotofacilResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function loadData() {
     setLoading(true);
@@ -97,6 +99,17 @@ export function Dashboard({ searchQuery }: DashboardProps) {
           </p>
         </div>
       </div>
+      
+      {error && (
+        <motion.div 
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          className="bg-red-500/10 border border-red-500/20 p-4 rounded-2xl flex items-center gap-3 text-red-400 text-xs font-bold"
+        >
+          <AlertCircle className="w-4 h-4" />
+          {error}
+        </motion.div>
+      )}
 
       <div className="grid grid-cols-12 gap-4 md:gap-6">
         {/* Latest Result */}
