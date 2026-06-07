@@ -3,10 +3,10 @@ import { auth, db, handleFirestoreError, OperationType } from "@/lib/firebase";
 import { collection, query, orderBy, onSnapshot, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { cn } from "@/lib/utils";
-import { Trash2, Loader2, Calendar, TrendingUp, Edit2, Check, X, Target, Award } from "lucide-react";
+import { Trash2, Loader2, Calendar, TrendingUp, Edit2, Check, X, Target, Award, ListFilter } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { fetchLatestResult, LotofacilResult } from "@/lib/lottery-api";
+import { fetchLatestResult, fetchHistory, LotofacilResult } from "@/lib/lottery-api";
 
 export function SavedBets() {
   const [user, setUser] = useState<User | null>(null);
@@ -15,18 +15,23 @@ export function SavedBets() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [latestResult, setLatestResult] = useState<LotofacilResult | null>(null);
+  const [historyResults, setHistoryResults] = useState<LotofacilResult[]>([]);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
-    async function loadLatest() {
+    async function loadResults() {
       try {
-        const res = await fetchLatestResult();
-        setLatestResult(res);
+        const [latest, history] = await Promise.all([
+          fetchLatestResult(),
+          fetchHistory(5)
+        ]);
+        setLatestResult(latest);
+        setHistoryResults(history);
       } catch (error) {
-        console.error("Error loading latest result for check:", error);
+        console.error("Error loading results for comparison:", error);
       }
     }
-    loadLatest();
+    loadResults();
   }, []);
 
   useEffect(() => {
@@ -100,10 +105,14 @@ export function SavedBets() {
     }
   };
 
+  const countHitsForDrawing = (betNumbers: number[], result: LotofacilResult) => {
+    const resultNumbers = result.dezenas.map(n => parseInt(n));
+    return betNumbers.filter(n => resultNumbers.includes(n)).length;
+  };
+
   const countHits = (betNumbers: number[]) => {
     if (!latestResult) return 0;
-    const resultNumbers = latestResult.dezenas.map(n => parseInt(n));
-    return betNumbers.filter(n => resultNumbers.includes(n)).length;
+    return countHitsForDrawing(betNumbers, latestResult);
   };
 
   if (!user) {
@@ -152,7 +161,7 @@ export function SavedBets() {
             
             return (
               <div key={bet.id} className={cn(
-                "bg-[#1c1b1b] rounded-xl p-6 border transition-all group relative overflow-hidden",
+                "bg-[#1c1b1b] rounded-xl p-6 border transition-all group relative overflow-hidden flex flex-col",
                 isWinner ? "border-[#6edba6]/40 shadow-[0_0_20px_rgba(110,219,166,0.1)]" : "border-white/5 hover:border-[#6edba6]/30"
               )}>
                 {isWinner && (
@@ -228,8 +237,9 @@ export function SavedBets() {
                   </div>
                 </div>
 
+                {/* Latest Result Comparison */}
                 {latestResult && (
-                  <div className="mb-4 p-3 bg-[#0e0e0e] rounded-lg border border-white/5 flex items-center justify-between">
+                  <div className="mb-4 p-3 bg-gradient-to-r from-black to-[#0e0e0e] rounded-lg border border-white/5 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Target className={cn("w-4 h-4", isWinner ? "text-[#6edba6]" : "text-[#bdcac0]")} />
                       <span className="text-[10px] font-black uppercase text-[#bdcac0]">Concurso {latestResult.concurso}</span>
@@ -264,7 +274,7 @@ export function SavedBets() {
                   })}
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-white/5">
+                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-white/5 mb-6">
                   <div className="text-center">
                     <p className="text-[9px] text-[#bdcac0] uppercase font-bold">Prob.</p>
                     <p className="text-xs font-black text-[#6edba6]">{bet.probability}</p>
@@ -278,6 +288,35 @@ export function SavedBets() {
                     <p className="text-xs font-black text-[#e5e2e1]">{bet.pairs}/{bet.odds}</p>
                   </div>
                 </div>
+
+                {/* History Comparison Section */}
+                {historyResults.length > 0 && (
+                  <div className="mt-auto space-y-3 pt-4 border-t border-white/5">
+                    <div className="flex items-center gap-2 mb-2">
+                      <ListFilter className="w-3 h-3 text-[#bdcac0]" />
+                      <span className="text-[9px] font-black uppercase text-[#bdcac0] tracking-widest">Últimos 5 Sorteios</span>
+                    </div>
+                    <div className="grid grid-cols-5 gap-1.5">
+                      {historyResults.map((result) => {
+                        const h = countHitsForDrawing(bet.numbers, result);
+                        const isWin = h >= 11;
+                        return (
+                          <div key={result.concurso} className="flex flex-col items-center gap-1">
+                            <div className={cn(
+                              "w-full py-1.5 rounded-md flex flex-col items-center justify-center border transition-all",
+                              isWin 
+                                ? "bg-[#6edba6]/10 border-[#6edba6]/20 text-[#6edba6]" 
+                                : "bg-white/[0.02] border-white/5 text-[#bdcac0]"
+                            )}>
+                              <span className="text-[11px] font-black">{h}</span>
+                            </div>
+                            <span className="text-[7px] font-bold text-[#bdcac0]/40">{result.concurso}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}
