@@ -1,6 +1,6 @@
-// v2.0.2 - Force redeploy for Gemini 2.0 Flash
+// v2.0.3 - Migration to @google/generative-ai for better stability on Vercel
 import { NextResponse } from 'next/server';
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const API_KEY = process.env.GEMINI_API_KEY || "";
 
@@ -16,7 +16,16 @@ export async function POST(req: Request) {
       );
     }
 
-    const ai = new GoogleGenAI({ apiKey: API_KEY });
+    if (!historyData || !Array.isArray(historyData)) {
+      return NextResponse.json(
+        { error: "Dados de histórico inválidos." },
+        { status: 400 }
+      );
+    }
+
+    // Inicializa o SDK oficial do Google Generative AI
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     const prompt = `
       Você é o "Oráculo da Lotofácil", uma IA especialista em análise estatística e probabilística de loterias brasileiras.
@@ -29,12 +38,9 @@ export async function POST(req: Request) {
       Não use markdown exagerado, apenas texto corrido e aspas se necessário.
     `;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: prompt,
-    });
-
-    const text = response.text ?? "";
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
 
     return NextResponse.json({ insight: text });
 
@@ -45,8 +51,13 @@ export async function POST(req: Request) {
       status: error?.status,
       stack: error?.stack,
     });
+    
+    // Fallback amigável
     return NextResponse.json(
-      { error: "O Oráculo está processando novos padrões. Tente novamente em breve." },
+      { 
+        error: "O Oráculo está processando novos padrões. Tente novamente em breve.",
+        details: error?.message 
+      },
       { status: 500 }
     );
   }
