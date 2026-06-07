@@ -250,32 +250,12 @@ export function Dashboard({ searchQuery }: DashboardProps) {
                     {item.freq}%
                   </div>
                 </div>
-                <span className="text-[10px] font-black text-[#bdcac0]/60 group-hover:text-white transition-colors">{item.num}</span>
+                <span className="text-xs md:text-sm font-black text-[#6edba6] group-hover:text-white transition-colors">{item.num}</span>
               </div>
             ))}
           </div>
           <div className="mt-8 pt-4 border-t border-white/5 text-center">
             <p className="text-[9px] font-medium text-[#bdcac0]/20 uppercase tracking-widest italic">Processamento Oracle Data Neural Network</p>
-          </div>
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="col-span-12 mt-4">
-          <div className="bg-gradient-to-br from-[#1c1b1b] to-[#0a0a0a] rounded-[40px] p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8 border border-white/5 shadow-2xl relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-full h-full bg-[#6edba6]/5 -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-in-out" />
-            <div className="flex items-center gap-6 relative z-10">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-3xl bg-[#e9c349]/10 flex items-center justify-center text-[#e9c349] shadow-inner shadow-[#e9c349]/20">
-                <Lightbulb className="w-8 h-8 md:w-10 md:h-10" />
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-xl md:text-2xl font-black font-headline tracking-tight">Próxima Jogada Mestra?</h3>
-                <p className="text-[#bdcac0]/60 text-xs md:text-sm max-w-md font-medium">Nosso algoritmo proprietário está processando os padrões do concurso {latest?.proximo_concurso}.</p>
-              </div>
-            </div>
-            <button className="whitespace-nowrap bg-[#6edba6] text-[#003823] px-10 py-5 rounded-2xl font-black text-lg shadow-2xl shadow-[#6edba6]/20 hover:shadow-[#6edba6]/40 hover:-translate-y-1 active:translate-y-0 transition-all flex items-center gap-3 relative z-10">
-              <Zap className="w-5 h-5 fill-current" />
-              GERAR PALPITE AGORA
-            </button>
           </div>
         </div>
       </div>
