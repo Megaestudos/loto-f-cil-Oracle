@@ -46,3 +46,13 @@ export async function fetchHistory(limit: number = 5): Promise<LotofacilResult[]
     return [];
   }
 }
+export async function fetchByConcurso(concurso: number | string): Promise<LotofacilResult | null> {
+  try {
+    const response = await fetch(`https://loteriascaixa-api.herokuapp.com/api/lotofacil/${concurso}`);
+    if (!response.ok) return null;
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching concurso ${concurso}:`, error);
+    return null;
+  }
+}

@@ -19,6 +19,7 @@ export default function Page() {
   const { user, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   if (loading) {
     return (
@@ -48,7 +49,13 @@ export default function Page() {
         onClose={() => setIsSidebarOpen(false)}
       />
       
-      <TopBar onOpenSidebar={() => setIsSidebarOpen(true)} />
+      <TopBar 
+        onOpenSidebar={() => setIsSidebarOpen(true)} 
+        onSearch={(query) => {
+          setSearchQuery(query);
+          setActiveTab('dashboard');
+        }}
+      />
       
       {/* Backdrop for mobile */}
       {isSidebarOpen && (
@@ -60,7 +67,7 @@ export default function Page() {
       
       <main className="lg:ml-64 pt-24 md:pt-28 px-4 md:px-8 pb-32 md:pb-12 transition-all">
         <div className="max-w-7xl mx-auto">
-          {activeTab === 'dashboard' && <Dashboard />}
+          {activeTab === 'dashboard' && <Dashboard searchQuery={searchQuery} />}
           {activeTab === 'generator' && <Generator />}
           {activeTab === 'saved' && <SavedBets />}
           {activeTab === 'profile' && <Profile />}
