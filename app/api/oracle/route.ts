@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 
 const API_KEY = process.env.GEMINI_API_KEY || "";
 
@@ -8,13 +8,15 @@ export async function POST(req: Request) {
     const { historyData } = await req.json();
 
     if (!API_KEY) {
-      console.error("GEMINI_API_KEY não encontrada no ambiente.");
-      return NextResponse.json({ error: "O Oráculo está offline no momento (API Key ausente)." }, { status: 500 });
+      console.error("[Oracle API] GEMINI_API_KEY não encontrada no ambiente Vercel.");
+      return NextResponse.json(
+        { error: "O Oráculo está offline (API Key ausente). Configure GEMINI_API_KEY nas variáveis de ambiente do Vercel." },
+        { status: 500 }
+      );
     }
 
-    const genAI = new GoogleGenerativeAI(API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    
+    const ai = new GoogleGenAI({ apiKey: API_KEY });
+
     const prompt = `
       Você é o "Oráculo da Lotofácil", uma IA especialista em análise estatística e probabilística de loterias brasileiras.
       Analise os seguintes dados dos últimos sorteios:
@@ -26,14 +28,25 @@ export async function POST(req: Request) {
       Não use markdown exagerado, apenas texto corrido e aspas se necessário.
     `;
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: prompt,
+    });
+
+    const text = response.text ?? "";
 
     return NextResponse.json({ insight: text });
 
   } catch (error: any) {
-    console.error("Erro na API do Oráculo:", error);
-    return NextResponse.json({ error: "O Oráculo está processando novos padrões. Tente novamente em breve." }, { status: 500 });
+    // Log detalhado para depuração nos logs do Vercel
+    console.error("[Oracle API] Erro detalhado:", {
+      message: error?.message,
+      status: error?.status,
+      stack: error?.stack,
+    });
+    return NextResponse.json(
+      { error: "O Oráculo está processando novos padrões. Tente novamente em breve." },
+      { status: 500 }
+    );
   }
 }
